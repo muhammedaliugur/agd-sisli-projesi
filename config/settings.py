@@ -22,6 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
+# NİHAİ ÇÖZÜM: Render gibi proxy'lerin arkasında çalışırken
+# doğru "Host" bilgisini okumasını sağlar.
+USE_X_FORWARDED_HOST = True
+
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
