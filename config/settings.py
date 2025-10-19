@@ -20,7 +20,11 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+import os
+
+# Eğer Render'de ENV var olarak ALLOWED_HOSTS koyduysan onu alır; yoksa default değerler gelir.
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "127.0.0.1,localhost,agd-sisli-projesi.onrender.com").split(",")
+
 
 # NİHAİ ÇÖZÜM: Render gibi proxy'lerin arkasında çalışırken
 # doğru "Host" bilgisini okumasını sağlar.
