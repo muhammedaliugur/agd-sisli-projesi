@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Rolü Düzenle{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card content-card shadow-sm">
+            <div class="card-body p-4 p-md-5">
+                <div class="text-center mb-4">
+                    <h1 class="h3 fw-bold">Rolü Düzenle</h1>
+                    <p class="text-muted"><strong>{{ profil_duzenle.user.username }}</strong> kullanıcısına yeni bir rol atayın.</p>
+                </div>
+                
+                <form method="POST">
+                    {% csrf_token %}
+                    <p>Mevcut Rol: <strong>{{ profil_duzenle.get_rol_display }}</strong></p>
+                    <div class="mb-4">
+                        <label for="rol-select" class="form-label">Yeni Rol</label>
+                        <select class="form-select" name="rol" id="rol-select" required>
+                            <option value="" selected disabled>Yeni rolü seçin...</option>
+                            {% for value, display in profil_duzenle.Rol.choices %}
+                                <option value="{{ value }}">{{ display }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{% url 'uyeler:uyeler' %}" class="btn btn-secondary">Vazgeç</a>
+                        <button type="submit" class="btn btn-primary">Değişiklikleri Kaydet</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

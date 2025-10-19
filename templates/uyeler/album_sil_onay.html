@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Albüm Silme Onayı{% endblock %}
+
+{% block content %}
+<div class="card content-card text-center border-danger border-2 shadow-lg">
+    <div class="card-body p-5">
+        <h1 class="display-4 text-danger"><i class="bi bi-exclamation-triangle-fill"></i></h1>
+        <h2 class="card-title">DİKKAT! Bu Albümü Silmek Üzeresiniz</h2>
+        <p class="lead">
+            <strong>"{{ album.baslik }}"</strong> başlıklı albümü ve içindeki <strong>{{ album.fotograflar.count }} adet fotoğrafı</strong> kalıcı olarak silmek istediğinizden emin misiniz?
+        </p>
+        <p class="text-muted">Bu işlem geri alınamaz.</p>
+        
+        <form method="POST">
+            {% csrf_token %}
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-5">
+                <a href="{% url 'uyeler:album_detay' album.id %}" class="btn btn-secondary btn-lg px-4">Hayır, Vazgeç</a>
+                <button type="submit" class="btn btn-danger btn-lg px-4">Evet, Kalıcı Olarak Sil</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

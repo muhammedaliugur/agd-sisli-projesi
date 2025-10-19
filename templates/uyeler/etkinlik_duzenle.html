@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Etkinliği Düzenle | AGD Şişli{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card content-card">
+                <div class="card-body">
+                    <header class="mb-4">
+                        <h1 class="display-6">Etkinliği Düzenle</h1>
+                        <p class="lead text-muted">Mevcut etkinliğin detaylarını güncelleyin.</p>
+                    </header>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="tip" class="form-label">Etkinlik Tipi</label>
+                                <select class="form-select" id="tip" name="tip" required>
+                                    {% for tip_kodu, tip_adi in etkinlik_tipleri %}
+                                        <option value="{{ tip_kodu }}" {% if etkinlik.tip == tip_kodu %}selected{% endif %}>{{ tip_adi }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="tarih_saat" class="form-label">Tarih ve Saat</label>
+                                <input type="datetime-local" class="form-control" id="tarih_saat" name="tarih_saat" value="{{ etkinlik.tarih_saat|date:'Y-m-d\TH:i' }}" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="baslik" class="form-label">Etkinlik Başlığı</label>
+                            <input type="text" class="form-control" id="baslik" name="baslik" value="{{ etkinlik.baslik }}" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="mekan" class="form-label">Mekan</label>
+                            <input type="text" class="form-control" id="mekan" name="mekan" value="{{ etkinlik.mekan|default_if_none:'' }}" placeholder="Cami adı, Halı Saha Adı, Park Adı vb.">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="aciklama" class="form-label">Açıklama</label>
+                            <textarea class="form-control" id="aciklama" name="aciklama" rows="6">{{ etkinlik.aciklama|default_if_none:'' }}</textarea>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="d-flex justify-content-end">
+                            <a href="{% url 'uyeler:gundem' %}" class="btn btn-secondary me-2">İptal Et</a>
+                            <button type="submit" class="btn btn-primary">Değişiklikleri Kaydet</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

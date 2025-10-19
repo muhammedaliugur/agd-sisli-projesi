@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ album.baslik }} - Galeri{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3 pb-3 border-bottom">
+        <div class="d-flex align-items-center">
+            <a href="{% url 'uyeler:galeri' %}" class="btn btn-outline-secondary me-3" title="Galeriye Dön">
+                <i class="bi bi-arrow-left"></i>
+            </a>
+            <div>
+                <h1 class="h3 fw-bold mb-0">{{ album.baslik }}</h1>
+                {% if album.aciklama %}<p class="text-muted mb-0">{{ album.aciklama }}</p>{% endif %}
+            </div>
+        </div>
+        {% if request.user.profil.rol == 'YETKILI' or request.user.profil.rol == 'BIRIM_BASKANI' %}
+        <div class="d-flex gap-2 flex-wrap justify-content-end">
+            <a href="{% url 'uyeler:album_fotograf_ekle' album.id %}" class="btn btn-dark btn-sm">
+                <i class="bi bi-camera-fill"></i> + Fotoğraf Ekle
+            </a>
+            <a href="{% url 'uyeler:album_duzenle' album.id %}" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-pencil-fill"></i> Düzenle
+            </a>
+            
+            <div class="vr mx-1"></div> <a href="{% url 'uyeler:album_indir' album.id %}" class="btn btn-outline-success btn-sm">
+                <i class="bi bi-download"></i> Tümünü İndir
+            </a>
+            <a href="{% url 'uyeler:album_sil' album.id %}" class="btn btn-outline-danger btn-sm">
+                <i class="bi bi-trash-fill"></i> Albümü Sil
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
+        {% for fotograf in fotograflar %}
+            <div class="col">
+                <div class="card h-100 shadow-sm content-card">
+                    <a href="{{ fotograf.resim.url }}" target="_blank">
+                        <img src="{{ fotograf.resim.url }}" class="card-img-top" alt="Galeri Fotoğrafı" style="aspect-ratio: 4/3; object-fit: cover;">
+                    </a>
+                    {% if request.user.profil.rol == 'YETKILI' or request.user.profil.rol == 'BIRIM_BASKANI' %}
+                    <div class="card-footer text-center bg-white border-0 py-2">
+                        <a href="{% url 'uyeler:fotograf_sil' fotograf.id %}" class="btn btn-outline-danger btn-sm w-100">
+                            <i class="bi bi-trash-fill"></i> Sil
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <div class="text-center p-5 text-muted">
+                    <i class="bi bi-camera-reels fs-1"></i>
+                    <p class="mt-3 mb-0">Bu albümde henüz fotoğraf bulunmamaktadır.</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

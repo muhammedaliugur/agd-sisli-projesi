@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Gündem | AGD Şişli{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="display-6">Gündem</h1>
+        <p class="lead text-muted">Teşkilatımızla ilgili en güncel duyurular ve etkinlikler.</p>
+    </div>
+
+    {% if request.user.profil.rol == 'YETKILI' or request.user.profil.rol == 'BIRIM_BASKANI' %}
+    <div class="d-flex gundem-actions">
+        <a href="{% url 'uyeler:duyuru_ekle' %}" class="btn-animated btn-animated--primary">
+            <i class="bi bi-megaphone-fill"></i>
+            <span>Yeni Duyuru</span>
+        </a>
+        <a href="{% url 'uyeler:etkinlik_ekle' %}" class="btn-animated btn-animated--success">
+            <i class="bi bi-calendar-plus-fill"></i>
+            <span>Yeni Etkinlik</span>
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<div class="row g-5">
+    <div class="col-lg-6">
+        <h3 class="fw-light mb-4">Duyurular</h3>
+        {% for duyuru in duyurular %}
+        <div class="card content-card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">{{ duyuru.baslik }}</h5>
+                <small class="text-muted d-block mb-3">
+                    <i class="bi bi-clock-fill"></i> {{ duyuru.yayin_tarihi|timesince }} önce
+                </small>
+                <p class="card-text">{{ duyuru.icerik|linebreaks|truncatewords:30 }}</p>
+                {% if request.user.profil.rol == 'YETKILI' or request.user.profil.rol == 'BIRIM_BASKANI' %}
+                <hr>
+                <div class="text-end">
+                    <a href="{% url 'uyeler:duyuru_duzenle' pk=duyuru.id %}"
+                        class="btn btn-outline-secondary btn-sm">Düzenle</a>
+                    <a href="{% url 'uyeler:duyuru_sil' pk=duyuru.id %}" class="btn btn-outline-danger btn-sm">Sil</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <div class="card content-card">
+            <div class="card-body text-center text-muted">Henüz yayınlanmış bir duyuru yok.</div>
+        </div>
+        {% endfor %}
+    </div>
+
+<div class="col-lg-6">
+            <h3 class="fw-light mb-4">Etkinlikler</h3>
+            {% for etkinlik in etkinlikler %}
+                 <div class="card content-card mb-4">
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <span class="badge bg-success-subtle text-success-emphasis rounded-pill">
+                                {{ etkinlik.get_tip_display }}
+                            </span>
+                        </div>
+                        <h5 class="card-title">{{ etkinlik.baslik }}</h5>
+                        <small class="text-muted d-block mb-3">
+                            <i class="bi bi-calendar-event-fill"></i> {{ etkinlik.tarih_saat|date:"d F Y, H:i" }}
+                            <br>
+                            <i class="bi bi-geo-alt-fill"></i> {{ etkinlik.mekan|default:"Belirtilmemiş" }}
+                        </small>
+                        <p class="card-text">{{ etkinlik.aciklama|linebreaks|truncatewords:20 }}</p>
+                        {% if request.user.profil.rol == 'YETKILI' or request.user.profil.rol == 'BIRIM_BASKANI' %}
+                        <hr>
+                        <div class="text-end">
+                            <a href="{% url 'uyeler:etkinlik_duzenle' pk=etkinlik.id %}" class="btn btn-outline-secondary btn-sm">Düzenle</a>
+                            <a href="{% url 'uyeler:etkinlik_sil' pk=etkinlik.id %}" class="btn btn-outline-danger btn-sm">Sil</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% empty %}
+                <div class="card content-card"><div class="card-body text-center text-muted">Henüz planlanmış bir etkinlik yok.</div></div>
+            {% endfor %}
+        </div>
+</div>
+{% endblock %}

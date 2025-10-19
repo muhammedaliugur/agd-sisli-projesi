@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Duyuruyu Düzenle | AGD Şişli{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card content-card">
+            <div class="card-body">
+                <header class="mb-4">
+                    <h1 class="display-6">Duyuruyu Düzenle</h1>
+                    <p class="lead text-muted">Mevcut duyurunun başlığını veya içeriğini güncelleyin.</p>
+                </header>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="baslik" class="form-label">Duyuru Başlığı</label>
+                        <input type="text" class="form-control form-control-lg" id="baslik" name="baslik"
+                            value="{{ duyuru.baslik }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="icerik" class="form-label">Duyuru İçeriği</label>
+                        <textarea class="form-control" id="icerik" name="icerik" rows="10"
+                            required>{{ duyuru.icerik }}</textarea>
+                    </div>
+
+                    <hr>
+
+                    <div class="d-flex justify-content-end">
+                        <a href="{% url 'uyeler:gundem' %}" class="btn btn-secondary me-2">İptal Et</a>
+                        <button type="submit" class="btn btn-primary">Değişiklikleri Kaydet</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

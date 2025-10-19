@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Albüm Düzenle{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card content-card shadow-sm">
+            <div class="card-body p-4 p-md-5">
+                <h3 class="fw-bold mb-4">"{{ album.baslik }}" Albümünü Düzenle</h3>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="albumBaslik" class="form-label">Albüm Başlığı</label>
+                        <input type="text" class="form-control" id="albumBaslik" name="baslik" value="{{ album.baslik }}" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="albumAciklama" class="form-label">Açıklama</label>
+                        <textarea class="form-control" id="albumAciklama" name="aciklama" rows="3">{{ album.aciklama }}</textarea>
+                    </div>
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{% url 'uyeler:album_detay' album.id %}" class="btn btn-secondary">Vazgeç</a>
+                        <button type="submit" class="btn btn-primary">Değişiklikleri Kaydet</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,101 @@
+body {
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+    /* Kaydırma çubuklarını gizle */
+}
+
+#branding-block {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://via.placeholder.com/1200x800');
+    /* Arka plan resmi */
+    background-size: cover;
+    background-position: center;
+}
+
+.form-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem;
+}
+
+.form-control-icon {
+    position: relative;
+}
+
+.form-control-icon .form-control {
+    padding-left: 2.5rem;
+}
+
+.form-control-icon .bi {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+}
+
+.btn-primary {
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.alert {
+    padding: 0.8rem 1.2rem;
+    /* İç boşluğu biraz azaltalım */
+    font-size: 0.95rem;
+    /* Yazı boyutunu küçültelim */
+    border-radius: 8px;
+    /* Kenarları daha yuvarlak yapalım */
+    border-width: 1px;
+    margin-bottom: 1.5rem;
+    /* Alt boşluğu artıralım */
+
+    /* Animasyonumuzu burada bağlıyoruz */
+    animation: fadeInDown 0.5s ease-out forwards;
+}
+
+/* Bildirim için "hoş" bir kırmızı tonu */
+.alert-danger,
+.alert-error {
+    /* Django 'error' tag'i gönderir, ikisini de kapsayalım */
+    background-color: #fde8e8;
+    /* Çok açık kırmızı arka plan */
+    border-color: #f7c5c5;
+    /* Daha yumuşak kırmızı kenarlık */
+    color: #9b1c1c;
+    /* Koyu ve okunaklı kırmızı yazı rengi */
+}
+
+/* Bildirim için "hoş" bir yeşil tonu */
+.alert-success {
+    background-color: #e8fdef;
+    /* Çok açık yeşil arka plan */
+    border-color: #c5f7d8;
+    /* Daha yumuşak yeşil kenarlık */
+    color: #1c9b54;
+    /* Koyu ve okunaklı yeşil yazı rengi */
+}
+
+
+/* Animasyonun kendisini tanımlayalım (Keyframes) */
+@keyframes fadeInDown {
+
+    /* Animasyon başlangıcı: */
+    0% {
+        opacity: 0;
+        /* Tamamen şeffaf */
+        transform: translateY(-20px);
+        /* Normal yerinden 20 piksel yukarıda */
+    }
+
+    /* Animasyon bitişi: */
+    100% {
+        opacity: 1;
+        /* Tamamen görünür */
+        transform: translateY(0);
+        /* Olması gereken normal konumunda */
+    }
+}

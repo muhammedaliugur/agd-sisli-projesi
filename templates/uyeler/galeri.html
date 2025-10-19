@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Galeri | AGD Şişli{% endblock %}
+
+{% block content %}
+    <header class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="display-6">Galeri</h1>
+            <p class="lead text-muted">Teşkilatımızın görsel arşivi.</p>
+        </div>
+        {% if request.user.profil.rol == 'YETKILI' or request.user.profil.rol == 'BIRIM_BASKANI' %}
+           <a href="{% url 'uyeler:album_ekle' %}" class="btn-animated btn-animated--primary">
+    <i class="bi bi-plus-circle-fill"></i>
+    <span>Yeni Albüm Ekle</span>
+</a>
+        {% endif %}
+    </header>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{% if message.tags %}{{ message.tags }}{% else %}info{% endif %} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 album-grid">
+        {% for album in albumler %}
+            <div class="col">
+                <a href="{% url 'uyeler:album_detay' album.id %}" class="text-decoration-none text-dark">
+                    <div class="card content-card h-100 album-card">
+                        {% with kapak=album.kapak_fotografi %}
+                            {% if kapak and kapak.resim.url %}
+                                <img src="{{ kapak.resim.url }}" class="card-img-top" alt="{{ album.baslik }} Kapak Fotoğrafı">
+                            {% else %}
+                                <img src="https://via.placeholder.com/400x300.png?text=Fotoğraf+Yok" class="card-img-top" alt="Kapak Yok">
+                            {% endif %}
+                        {% endwith %}
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ album.baslik }}</h5>
+                            <p class="card-text small text-muted flex-grow-1">{{ album.aciklama|truncatewords:15 }}</p>
+                        </div>
+                        <div class="card-footer bg-transparent border-top-0 pt-0">
+                             <small class="text-muted">{{ album.olusturma_tarihi|date:"d F Y" }}</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <div class="alert alert-info">Henüz oluşturulmuş bir albüm bulunmamaktadır.</div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% endblock %}

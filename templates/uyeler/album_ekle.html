@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Yeni Albüm Ekle{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card content-card shadow-sm">
+            <div class="card-body p-4 p-md-5">
+                <div class="text-center mb-4">
+                    <h1 class="h3 fw-bold">Yeni Albüm Oluştur (Adım 1/2)</h1>
+                    <p class="text-muted">Önce albümünüz için bir başlık ve açıklama belirleyin.</p>
+                </div>
+                
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="albumBaslik" class="form-label">Albüm Başlığı</label>
+                        <input type="text" class="form-control" id="albumBaslik" name="baslik" required placeholder="Örn: 2024 Yaz Kampı">
+                    </div>
+                    <div class="mb-4">
+                        <label for="albumAciklama" class="form-label">Açıklama (İsteğe Bağlı)</label>
+                        <textarea class="form-control" id="albumAciklama" name="aciklama" rows="3" placeholder="Bu albüm hakkında kısa bir bilgi..."></textarea>
+                    </div>
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{% url 'uyeler:galeri' %}" class="btn btn-secondary">Vazgeç</a>
+                        <button type="submit" class="btn btn-primary">
+                            Oluştur ve Fotoğraf Ekleme Adımına Geç <i class="bi bi-arrow-right"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Yeni Etkinlik Ekle | AGD Şişli{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card content-card">
+            <div class="card-body">
+                <header class="mb-4">
+                    <h1 class="display-6">Yeni Etkinlik Ekle</h1>
+                    <p class="lead text-muted">Teşkilat için yeni bir program oluşturun.</p>
+                </header>
+
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+                {% endif %}
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="tip" class="form-label">Etkinlik Tipi (*Zorunlu)</label>
+                            <select class="form-select" id="tip" name="tip" required>
+                                <option value="" selected disabled>Lütfen bir tip seçin...</option>
+                                {% for tip_kodu, tip_adi in etkinlik_tipleri %}
+                                <option value="{{ tip_kodu }}">{{ tip_adi }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="tarih_saat" class="form-label">Tarih ve Saat (*Zorunlu)</label>
+                            <input type="datetime-local" class="form-control" id="tarih_saat" name="tarih_saat"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="baslik" class="form-label">Etkinlik Başlığı</label>
+                        <input type="text" class="form-control" id="baslik" name="baslik"
+                            placeholder="Sadece 'Diğer' tipi seçildiğinde doldurun...">
+                        <div class="form-text">Diğer tipler için başlık otomatik oluşturulacaktır.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="mekan" class="form-label">Mekan</label>
+                        <input type="text" class="form-control" id="mekan" name="mekan"
+                            placeholder="Cami adı, Halı Saha Adı, Park Adı vb.">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="aciklama" class="form-label">Açıklama</label>
+                        <textarea class="form-control" id="aciklama" name="aciklama" rows="6"></textarea>
+                    </div>
+
+                    <hr>
+
+                    <div class="d-flex justify-content-end">
+                        <a href="{% url 'uyeler:gundem' %}" class="btn btn-secondary me-2">İptal Et</a>
+                        <button type="submit" class="btn btn-success">Etkinliği Oluştur</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
