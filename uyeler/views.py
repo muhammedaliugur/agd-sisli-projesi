@@ -28,8 +28,6 @@ def role_required(allowed_roles=[]):
 def home_view(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
-
-        # SPAM KORUMASI: Form geçerli VE gizli honeypot alanı boş ise devam et.
         if form.is_valid() and not form.cleaned_data.get('honeypot'):
             contact_message = form.save()
             try:
@@ -45,7 +43,7 @@ def home_view(request):
                 --------------------------------------------------
                 Mesaj: {contact_message.message}
                 """
-                
+
                 email = EmailMessage(
                     subject=subject,
                     body=message_body,
@@ -55,18 +53,15 @@ def home_view(request):
                 )
                 email.send()
                 messages.success(request, 'Mesajınız başarıyla gönderildi. Teşekkür ederiz!')
-            
+
             except Exception as e:
                 print(f"E-POSTA GÖNDERİM HATASI (NİHAİ KOD): {e}")
                 messages.warning(request, 'Mesajınız kaydedildi ancak e-posta gönderiminde bir sorun yaşandı.')
             
             return redirect('/#contact')
         else:
-            # Eğer form geçersizse VEYA honeypot alanı doluysa (spam ise),
-            # bota tuzağa düştüğünü belli etme, başarılıymış gibi davran.
             messages.success(request, 'Mesajınız başarıyla gönderildi. Teşekkür ederiz!')
             return redirect('/#contact')
-
     else:
         form = ContactForm()
 
@@ -81,14 +76,24 @@ def home_view(request):
         except Profil.DoesNotExist:
             context.update({'profil': None})
 
+    # 🩵 HATA DÜZELTİLEN KISIM 🩵
     son_duyurular = Duyuru.objects.order_by('-yayin_tarihi')[:3]
     son_etkinlikler = Etkinlik.objects.order_by('-tarih_saat')[:3]
-    gundem_listesi = sorted(chain(son_duyurular, son_etkinlikler), key=lambda x: getattr(x, 'yayin_tarihi', x.tarih_saat), reverse=True)
-    
-    son_galeri_resimleri = Fotograf.objects.order_by('-yuklenme_tarihi')[:5]
+
+    # Her iki modelin de tarih alanı farklı olduğundan, güvenli karşılaştırma yapıyoruz
+    def get_tarih(obj):
+        if hasattr(obj, 'yayin_tarihi'):
+            return obj.yayin_tarihi
+        elif hasattr(obj, 'tarih_saat'):
+            return obj.tarih_saat
+        return None
+
+    gundem_listesi = sorted(chain(son_duyurular, son_etkinlikler), key=get_tarih, reverse=True)
+
+    son_galeri_resimleri = Fotograf.objects.order_by('-yuklenme_tarihi')
 
     context.update({
-        'gundem_listesi': gundem_listesi, 
+        'gundem_listesi': gundem_listesi,
         'son_galeri_resimleri': son_galeri_resimleri,
         'form': form
     })
@@ -102,7 +107,10 @@ def gundem_view(request):
     context = {'duyurular': tum_duyurular, 'etkinlikler': tum_etkinlikler}
     return render(request, 'uyeler/gundem.html', context)
 
-# --- GALERİ VIEW'LARI ---
+
+# ------------------------------
+# GALERİ
+# ------------------------------
 def galeri_view(request):
     if request.method == 'POST':
         if request.user.profil.rol in ['YETKILI', 'BIRIM_BASKANI']:
@@ -111,13 +119,13 @@ def galeri_view(request):
             if baslik:
                 yeni_album = Album.objects.create(baslik=baslik, aciklama=aciklama, olusturan=request.user)
                 messages.success(request, f'"{yeni_album.baslik}" başlıklı albüm başarıyla oluşturuldu. Şimdi fotoğrafları ekleyebilirsiniz.')
-                admin_url = reverse('admin:uyeler_album_change', args=[yeni_album.id])
-                return redirect(admin_url)
+                return redirect('uyeler:album_fotograf_ekle', album_id=yeni_album.id)
             else:
                 messages.error(request, 'Albüm başlığı boş bırakılamaz.')
         else:
             messages.error(request, 'Bu işlemi yapmak için yetkiniz bulunmamaktadır.')
         return redirect('uyeler:galeri')
+
     albumler = Album.objects.all()
     context = {'albumler': albumler}
     return render(request, 'uyeler/galeri.html', context)
