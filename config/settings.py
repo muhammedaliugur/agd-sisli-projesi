@@ -15,6 +15,16 @@ import os
 from dotenv import load_dotenv
 import dj_database_url
 
+INSTALLED_APPS += ['cloudinary', 'cloudinary_storage']
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'decwzfcoy',
+    'API_KEY': '477266763949383',
+    'API_SECRET': '7LSe-hxLHTy5iuoFo8nFDTKwDiE',
+}
+
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
