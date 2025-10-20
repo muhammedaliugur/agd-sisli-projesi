@@ -15,11 +15,18 @@ from django.http import HttpResponse
 
 
 def aktif_et(request):
-    u = User.objects.get(username="muhammedaliugur")  # admin yerine kendi kullanıcı adını yaz
+    u = User.objects.get(username="muhammedaliugur")  # kendi admin kullanıcı adın
     u.is_active = True
     u.save()
-    return HttpResponse("Kullanıcı aktif edildi!")
 
+    try:
+        profil = Profil.objects.get(user=u)
+        profil.statü = "AKTIF"
+        profil.save()
+    except Profil.DoesNotExist:
+        pass
+
+    return HttpResponse("Kullanıcı ve profil aktif edildi!")
 # --- YETKİ KONTROL DEKORATÖRÜ ---
 def role_required(allowed_roles=[]):
     def decorator(view_func):
@@ -84,7 +91,7 @@ def home_view(request):
             profil = request.user.profil
             onay_bekleyenler_sayisi = 0
             if profil.rol == 'YETKILI':
-                onay_bekleyenler_sayisi = Profil.objects.filter(statü='BEKLEMEDE').count()
+                onay_bekleyenler_sayisi = Profil.objects.filter(statü='AKTIF').count()
             context.update({'profil': profil, 'onay_bekleyenler_sayisi': onay_bekleyenler_sayisi})
         except Profil.DoesNotExist:
             context.update({'profil': None})
@@ -267,7 +274,7 @@ def album_indir_view(request, album_id):
 
 @role_required(allowed_roles=['YETKILI'])
 def uyeler_view(request):
-    onay_bekleyen_kullanicilar = Profil.objects.filter(statü='BEKLEMEDE').select_related('user')
+    onay_bekleyen_kullanicilar = Profil.objects.filter(statü='AKTIF').select_related('user')
     aktif_kullanicilar = Profil.objects.filter(statü='AKTIF').select_related('user')
     context = {'onay_bekleyenler': onay_bekleyen_kullanicilar, 'aktif_kullanicilar': aktif_kullanicilar, 'profil': request.user.profil} # profil eklendi
     return render(request, 'uyeler/uyeler.html', context)
@@ -310,7 +317,7 @@ def login_view(request):
             try:
                 if hasattr(user, 'profil') and user.profil.statü == 'AKTIF':
                     login(request, user); return redirect('uyeler:home')
-                elif hasattr(user, 'profil') and user.profil.statü == 'BEKLEMEDE':
+                elif hasattr(user, 'profil') and user.profil.statü == 'AKTIF':
                     messages.warning(request, 'Hesabınız henüz yönetici onayı beklemektedir.')
                 else: messages.error(request, 'Hesabınız reddedilmiş veya aktif değil.')
             except Profil.DoesNotExist: messages.error(request, 'Profiliniz bulunamadı.')
