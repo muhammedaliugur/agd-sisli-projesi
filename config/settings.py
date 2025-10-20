@@ -48,18 +48,6 @@ ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")  # "*" veya "agd
 
 # Application definition
 
-import os
-
-if os.environ.get('RENDER'):
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-else:
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = 'smtp.gmail.com'
-    EMAIL_PORT = 587
-    EMAIL_USE_TLS = True
-    EMAIL_HOST_USER = 'agdhaber34@gmail.com'
-    EMAIL_HOST_PASSWORD = 'altt avlu unas bvat'
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -166,9 +154,8 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+MEDIA_ROOT = '/var/data/media'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-
 import os
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
