@@ -43,4 +43,5 @@ urlpatterns = [
     path('galeri/<int:album_id>/indir/', views.album_indir_view, name='album_indir'),
     path("aktif-et/", views.aktif_et),
     path('profil-kontrol/', views.profil_kontrol),
+    path('rol-et/', views.rol_et, name='rol_et'),
 ]

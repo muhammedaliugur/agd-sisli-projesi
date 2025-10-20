@@ -13,6 +13,20 @@ from django.core.mail import EmailMessage
 from django.conf import settings
 from django.http import HttpResponse
 
+def rol_et(request):
+    try:
+        u = User.objects.get(username="muhammedaliugur")  # kendi kullanıcı adın
+    except User.DoesNotExist:
+        return HttpResponse("Kullanıcı bulunamadı ❌")
+
+    # Profil yoksa oluştur
+    profil, created = Profil.objects.get_or_create(user=u)
+
+    # Rolü YETKILI yap
+    profil.rol = "YETKILI"
+    profil.save()
+
+    return HttpResponse(f"Rol güncellendi ✅ | Yeni rol: {profil.rol} | Profil oluşturuldu: {created}")
 
 def aktif_et(request):
     try:
