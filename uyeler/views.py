@@ -12,6 +12,13 @@ from .forms import ContactForm
 from django.core.mail import EmailMessage
 from django.conf import settings
 
+
+def aktif_et(request):
+    u = User.objects.get(username="muhammedaliugur")  # admin yerine kendi kullanıcı adını yaz
+    u.is_active = True
+    u.save()
+    return HttpResponse("Kullanıcı aktif edildi!")
+
 # --- YETKİ KONTROL DEKORATÖRÜ ---
 def role_required(allowed_roles=[]):
     def decorator(view_func):
