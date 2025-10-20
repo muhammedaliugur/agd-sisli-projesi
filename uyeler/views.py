@@ -15,18 +15,22 @@ from django.http import HttpResponse
 
 
 def aktif_et(request):
-    u = User.objects.get(username="muhammedaliugur")  # kendi admin kullanıcı adın
+    try:
+        u = User.objects.get(username="muhammedaliugur")
+    except User.DoesNotExist:
+        return HttpResponse("Kullanıcı bulunamadı ❌")
+
+    # Kullanıcıyı aktif et
     u.is_active = True
     u.save()
 
-    try:
-        profil = Profil.objects.get(user=u)
-        profil.statü = "AKTIF"
-        profil.save()
-    except Profil.DoesNotExist:
-        pass
+    # Profil yoksa oluştur, varsa al
+    profil, created = Profil.objects.get_or_create(user=u)
+    profil.statü = "AKTIF"
+    profil.save()
 
-    return HttpResponse("Kullanıcı ve profil aktif edildi!")
+    return HttpResponse(f"Kullanıcı aktif edildi ✅ | Profil oluşturuldu: {created} | Statü: {profil.statü}")
+
 def profil_kontrol(request):
     try:
         u = User.objects.get(username="muhammedaliugur")
