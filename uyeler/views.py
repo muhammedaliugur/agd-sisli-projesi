@@ -13,49 +13,6 @@ from django.core.mail import EmailMessage
 from django.conf import settings
 from django.http import HttpResponse
 
-def rol_et(request):
-    try:
-        u = User.objects.get(username="muhammedaliugur")  # kendi kullanıcı adın
-    except User.DoesNotExist:
-        return HttpResponse("Kullanıcı bulunamadı ❌")
-
-    # Profil yoksa oluştur
-    profil, created = Profil.objects.get_or_create(user=u)
-
-    # Rolü YETKILI yap
-    profil.rol = "YETKILI"
-    profil.save()
-
-    return HttpResponse(f"Rol güncellendi ✅ | Yeni rol: {profil.rol} | Profil oluşturuldu: {created}")
-
-def aktif_et(request):
-    try:
-        u = User.objects.get(username="muhammedaliugur")
-    except User.DoesNotExist:
-        return HttpResponse("Kullanıcı bulunamadı ❌")
-
-    # Kullanıcıyı aktif et
-    u.is_active = True
-    u.save()
-
-    # Profil yoksa oluştur, varsa al
-    profil, created = Profil.objects.get_or_create(user=u)
-    profil.statü = "AKTIF"
-    profil.save()
-
-    return HttpResponse(f"Kullanıcı aktif edildi ✅ | Profil oluşturuldu: {created} | Statü: {profil.statü}")
-
-def profil_kontrol(request):
-    try:
-        u = User.objects.get(username="muhammedaliugur")
-        try:
-            p = Profil.objects.get(user=u)
-            return HttpResponse(f"Profil bulundu ✅ | Statü: {p.statü}")
-        except Profil.DoesNotExist:
-            return HttpResponse("Profil bulunamadı ❌")
-    except User.DoesNotExist:
-        return HttpResponse("Kullanıcı bulunamadı ❌")
-# --- YETKİ KONTROL DEKORATÖRÜ ---
 def role_required(allowed_roles=[]):
     def decorator(view_func):
         @login_required(login_url='uyeler:login')

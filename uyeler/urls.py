@@ -41,7 +41,4 @@ urlpatterns = [
     path('not-defteri/<int:not_id>/sil/', views.not_sil_view, name='not_sil'),
     path('uyeler/rol-duzenle/<int:user_id>/', views.kullanici_rol_duzenle_view, name='kullanici_rol_duzenle'),
     path('galeri/<int:album_id>/indir/', views.album_indir_view, name='album_indir'),
-    path("aktif-et/", views.aktif_et),
-    path('profil-kontrol/', views.profil_kontrol),
-    path('rol-et/', views.rol_et, name='rol_et'),
 ]
