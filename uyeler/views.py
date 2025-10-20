@@ -11,6 +11,7 @@ from itertools import chain
 from .forms import ContactForm
 from django.core.mail import EmailMessage
 from django.conf import settings
+from django.http import HttpResponse
 
 
 def aktif_et(request):
