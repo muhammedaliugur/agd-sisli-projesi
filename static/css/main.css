@@ -735,3 +735,85 @@ body {
         justify-content: center;
     }
 }
+
+/* Misafir Giriş Paneli Stili */
+.guest-prompt {
+    background-color: #f8f9fa; /* Hafif gri arkaplan */
+    padding: 2.5rem 1.5rem;      /* İç boşluklar (üst/alt - sağ/sol) */
+    border-radius: 1rem;       /* Yumuşak, yuvarlak köşeler */
+    border: 1px solid #e9ecef; /* Çok hafif bir çerçeve */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05); /* Modern ve yumuşak bir gölge */
+    max-width: 500px;          /* Panelin çok genişlemesini önle */
+    margin-left: auto;         /* Paneli ortala */
+    margin-right: auto;        /* Paneli ortala */
+}
+
+/* İkon Stili */
+.prompt-icon-wrapper {
+    background: linear-gradient(135deg, #0d6efd, #0a58ca); /* Mavi gradient arkaplan */
+    color: #fff;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%; /* Tam yuvarlak şekil */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem auto; /* İkonu ortala ve altına boşluk bırak */
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.4); /* Arkaplanla uyumlu gölge */
+}
+
+.prompt-icon {
+    font-size: 2.5rem; /* İkon boyutu */
+}
+
+/* Ana "Kayıt Ol" Butonu Stili */
+.btn-register {
+    font-weight: 600; /* Yazı kalınlığı */
+    padding: 12px 30px; /* Buton içi boşluklar */
+    border-radius: 50px; /* "Pill" şeklinde buton */
+    border-width: 2px;
+    transition: all 0.3s ease; /* Tüm geçiş efektleri için yumuşatma */
+    display: inline-flex; /* İkon ve metni düzgün hizalamak için */
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-register:hover {
+    transform: translateY(-3px); /* Hover durumunda hafifçe yukarı kalksın */
+    box-shadow: 0 6px 20px rgba(13, 110, 253, 0.35); /* Gölgeyi belirginleştir */
+}
+
+.btn-register .bi {
+    font-size: 1.2rem; /* Buton içindeki ikonun boyutu */
+}
+
+/* İkincil "Giriş Yap" Linki Stili */
+.login-link {
+    color: #0d6efd; /* Ana tema rengi */
+    font-weight: 600;
+    text-decoration: none;
+    position: relative;
+    transition: color 0.2s ease;
+}
+
+.login-link::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: #0d6efd;
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+}
+
+.login-link:hover {
+    color: #0a58ca;
+}
+
+.login-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}

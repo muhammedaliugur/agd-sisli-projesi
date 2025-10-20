@@ -162,12 +162,21 @@
                             <a href="tel:+905515958858" class="contact-info-item"><i class="bi bi-telephone-fill"></i><span>+90 (551) 595 88 58</span></a>
                         </div>
                     {% else %}
-                        <div class="guest-prompt text-center mt-4">
-                            <i class="bi bi-lock-fill prompt-icon"></i>
-                            <p class="lead mb-4">Mesaj gönderebilmek için lütfen üye girişi yapın.</p>
-                            <a href="{% url 'uyeler:register' %}" class="btn-register"><span>Ücretsiz Kayıt Ol</span><i class="bi bi-person-plus-fill"></i></a>
-                            <p class="mt-3"><small>Zaten üye misin? <a href="{% url 'uyeler:login' %}" class="login-link">Giriş Yap</a></small></p>
-                        </div>
+                       <div class="guest-prompt text-center mt-4">
+    <div class="prompt-icon-wrapper">
+        <i class="bi bi-shield-lock-fill prompt-icon"></i>
+    </div>
+    <p class="lead mb-4">İçeriği görmek ve mesaj gönderebilmek için lütfen üye girişi yapın.</p>
+    
+    <a href="{% url 'uyeler:register' %}" class="btn btn-primary btn-lg btn-register shadow-sm">
+        <i class="bi bi-person-plus-fill me-2"></i>
+        <span>Ücretsiz Kayıt Ol</span>
+    </a>
+    
+    <p class="mt-3 text-muted">
+        <small>Zaten üye misin? <a href="{% url 'uyeler:login' %}" class="login-link">Hemen Giriş Yap</a></small>
+    </p>
+</div>
                     {% endif %}
                 </div>
             </div>
