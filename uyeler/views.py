@@ -27,6 +27,16 @@ def aktif_et(request):
         pass
 
     return HttpResponse("Kullanıcı ve profil aktif edildi!")
+def profil_kontrol(request):
+    try:
+        u = User.objects.get(username="muhammedaliugur")
+        try:
+            p = Profil.objects.get(user=u)
+            return HttpResponse(f"Profil bulundu ✅ | Statü: {p.statü}")
+        except Profil.DoesNotExist:
+            return HttpResponse("Profil bulunamadı ❌")
+    except User.DoesNotExist:
+        return HttpResponse("Kullanıcı bulunamadı ❌")
 # --- YETKİ KONTROL DEKORATÖRÜ ---
 def role_required(allowed_roles=[]):
     def decorator(view_func):
