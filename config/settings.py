@@ -15,7 +15,6 @@ import os
 from dotenv import load_dotenv
 import dj_database_url
 
-INSTALLED_APPS += ['cloudinary', 'cloudinary_storage']
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
@@ -65,8 +64,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # --- YENİ UYGULAMALARIMIZ ---
-    # <-- YENİ EKLENDİ (En doğru ve modern ekleme yöntemi budur)
+    'cloudinary',
+    'cloudinary_storage',
     'uyeler.apps.UyelerConfig',
 ]
 
